@@ -40,6 +40,13 @@ jobs:
           python3 scripts/process_pdf.py format "Jones & Lee" "Deep Learning" "2020" \
             | grep -q "Jones & Lee - Deep Learning - 2020.pdf"
 
+          # Recursive vs. top-level listing
+          mkdir -p _t/sub/deep
+          touch _t/a.pdf _t/sub/b.pdf _t/sub/deep/c.pdf _t/note.txt
+          test "$(python3 scripts/process_pdf.py list _t      | python3 -c 'import sys,json;print(json.load(sys.stdin)["count"])')" = "1"
+          test "$(python3 scripts/process_pdf.py list _t -r    | python3 -c 'import sys,json;print(json.load(sys.stdin)["count"])')" = "3"
+          rm -rf _t
+
           # No-command path must return an error JSON and exit non-zero
           if python3 scripts/process_pdf.py; then
             echo "expected non-zero exit for missing command"; exit 1

@@ -9,7 +9,7 @@ Commands:
   crossref_search <query>         Search CrossRef by title/author keywords
   semantic_search <query>         Search Semantic Scholar (good for preprints)
   rename <pdf_path> <author> <title> <year>   Rename file in place
-  list <folder_path>              List all PDF files in folder
+  list <folder_path> [-r]         List PDF files in folder (-r = recurse subfolders)
   format <author> <title> <year>  Preview formatted filename without renaming
 
 All commands return JSON to stdout.
@@ -347,14 +347,24 @@ def rename_pdf(pdf_path, author, title, year):
     return {"new_path": new_path, "new_name": os.path.basename(new_path)}
 
 
-def list_pdfs(folder_path):
-    """List all PDF files in a folder (non-recursive, sorted)."""
+def list_pdfs(folder_path, recursive=False):
+    """List PDF files in a folder, sorted.
+
+    By default only the top level is scanned. Pass recursive=True to walk
+    subfolders as well.
+    """
     try:
-        files = sorted(f for f in os.listdir(folder_path) if f.lower().endswith(".pdf"))
-        return {
-            "pdfs": [os.path.join(folder_path, f) for f in files],
-            "count": len(files),
-        }
+        if recursive:
+            paths = []
+            for root, _dirs, files in os.walk(folder_path):
+                for f in files:
+                    if f.lower().endswith(".pdf"):
+                        paths.append(os.path.join(root, f))
+            paths.sort()
+        else:
+            files = sorted(f for f in os.listdir(folder_path) if f.lower().endswith(".pdf"))
+            paths = [os.path.join(folder_path, f) for f in files]
+        return {"pdfs": paths, "count": len(paths), "recursive": recursive}
     except Exception as e:
         return {"error": str(e)}
 
@@ -398,7 +408,8 @@ if __name__ == "__main__":
         print(json.dumps({"filename": result}))
 
     elif cmd == "list" and len(sys.argv) >= 3:
-        print(json.dumps(list_pdfs(sys.argv[2])))
+        recursive = "-r" in sys.argv[3:] or "--recursive" in sys.argv[3:]
+        print(json.dumps(list_pdfs(sys.argv[2], recursive)))
 
     else:
         print(json.dumps({"error": f"Unknown command or missing arguments: {' '.join(sys.argv[1:])}"}))

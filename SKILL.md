@@ -42,9 +42,10 @@ Ask these two questions upfront — not mid-processing. Store the answers and us
 - **Single file** → use the path directly
 - **Folder** → list all PDFs:
   ```bash
-  python3 "<script>" list "<folder_path>"
+  python3 "<script>" list "<folder_path>"        # top level only
+  python3 "<script>" list "<folder_path>" -r     # recurse into subfolders
   ```
-  Returns `{pdfs: [...], count: N}`.
+  Returns `{pdfs: [...], count: N, recursive: bool}`. Use `-r` when the user asks to process a folder *and its subfolders* (e.g. a nested library); otherwise default to the top level.
 
 ---
 

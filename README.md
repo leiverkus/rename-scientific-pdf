@@ -17,6 +17,12 @@ Jones & Lee - Deep Learning for Natural Lang - 2020.pdf
 
 Works exactly like [Zotero's](https://www.zotero.org/) metadata resolver: it finds the DOI in the file, queries CrossRef or Semantic Scholar, and renames in place. Falls back gracefully to content-based search when no DOI is present.
 
+<p align="center">
+  <img src="assets/demo.svg" alt="Demo: cryptic filenames renamed to Author - Title - Year" width="760">
+</p>
+
+<sub><i>Illustrative animation — not a screen recording.</i></sub>
+
 ---
 
 ## Features
@@ -24,7 +30,7 @@ Works exactly like [Zotero's](https://www.zotero.org/) metadata resolver: it fin
 - **DOI-based lookup** via [CrossRef](https://www.crossref.org/) — authoritative metadata when a DOI is present
 - **Content-based fallback** via CrossRef full-text search and [Semantic Scholar](https://www.semanticscholar.org/) for preprints and grey literature
 - **OCR support** for image-only/scanned PDFs — your choice of [Tesseract](https://github.com/tesseract-ocr/tesseract) (local, fast) or Claude vision (more accurate for complex layouts)
-- **Batch processing** — point it at a folder and it processes all PDFs inside
+- **Batch processing** — point it at a folder and it processes all PDFs inside, optionally recursing into subfolders
 - **Naming schema**:
   - 1 author: `Smith`
   - 2 authors: `Smith & Jones`
@@ -89,6 +95,10 @@ Rename this paper: /Downloads/10.1038-s41586-021-03819-2.pdf
 
 ```
 Go through ~/research/unread/ and rename everything with Zotero-style names.
+```
+
+```
+Rename every PDF under ~/papers/ including all subfolders.
 ```
 
 ```
