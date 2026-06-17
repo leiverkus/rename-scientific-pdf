@@ -1,5 +1,6 @@
 # rename-scientific-pdf
 
+[![Release](https://img.shields.io/github/v/release/leiverkus/rename-scientific-pdf?label=release)](https://github.com/leiverkus/rename-scientific-pdf/releases/latest)
 [![CI](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml/badge.svg)](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-d97757?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
@@ -45,7 +46,7 @@ Works exactly like [Zotero's](https://www.zotero.org/) metadata resolver: it fin
 
 ### Claude Code / Claude Cowork
 
-1. Download [`rename-scientific-pdf.skill`](rename-scientific-pdf.skill)
+1. Download [`rename-scientific-pdf.skill`](https://github.com/leiverkus/rename-scientific-pdf/releases/latest/download/rename-scientific-pdf.skill) from the [latest release](https://github.com/leiverkus/rename-scientific-pdf/releases/latest)
 2. Drag it into a Claude Code or Cowork chat — Claude will offer to install it
 
 ### Manual
@@ -119,6 +120,12 @@ On first run, Claude asks:
 | `journal.pone.0293119.pdf` | `Pérez & García - Urban Heat Island Effects - 2023.pdf` |
 | `2106.08295.pdf` | `Brown et al. - Language Models Are Few-Shot - 2020.pdf` |
 | `scan001.pdf` *(scanned)* | `Smith - Ceramic Analysis in the Levant - 1998.pdf` |
+
+---
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
