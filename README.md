@@ -1,4 +1,4 @@
-<h1 align="center">📄 Scientific PDF Renamer</h1>
+<h1 align="center">Scientific PDF Renamer</h1>
 
 <p align="center">
   <strong>Zotero-style <code>Author&nbsp;-&nbsp;Title&nbsp;-&nbsp;Year.pdf</code> filenames for your papers — a skill for Claude.</strong>
