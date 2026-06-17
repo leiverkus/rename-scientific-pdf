@@ -1,13 +1,19 @@
-# rename-scientific-pdf
+<h1 align="center">📄 Scientific PDF Renamer</h1>
 
-[![Release](https://img.shields.io/github/v/release/leiverkus/rename-scientific-pdf?label=release)](https://github.com/leiverkus/rename-scientific-pdf/releases/latest)
-[![CI](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml/badge.svg)](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Claude Skill](https://img.shields.io/badge/Claude-Skill-d97757?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
-[![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Metadata: CrossRef · Semantic Scholar](https://img.shields.io/badge/Metadata-CrossRef%20%C2%B7%20Semantic%20Scholar-1a73e8.svg)](https://www.crossref.org/)
-[![OCR: Tesseract · Claude Vision](https://img.shields.io/badge/OCR-Tesseract%20%C2%B7%20Claude%20Vision-5a9e6f.svg)](https://github.com/tesseract-ocr/tesseract)
-[![Platform: macOS · Linux](https://img.shields.io/badge/Platform-macOS%20%C2%B7%20Linux-555.svg)](#dependencies)
+<p align="center">
+  <strong>Zotero-style <code>Author&nbsp;-&nbsp;Title&nbsp;-&nbsp;Year.pdf</code> filenames for your papers — a skill for Claude.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/leiverkus/rename-scientific-pdf/releases/latest"><img src="https://img.shields.io/github/v/release/leiverkus/rename-scientific-pdf?label=release" alt="Release"></a>
+  <a href="https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml"><img src="https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://claude.ai/claude-code"><img src="https://img.shields.io/badge/Claude-Skill-d97757?logo=anthropic&logoColor=white" alt="Claude Skill"></a>
+  <a href="https://www.python.org/"><img src="https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white" alt="Python 3.8+"></a>
+  <a href="https://www.crossref.org/"><img src="https://img.shields.io/badge/Metadata-CrossRef%20%C2%B7%20Semantic%20Scholar-1a73e8.svg" alt="Metadata: CrossRef · Semantic Scholar"></a>
+  <a href="https://github.com/tesseract-ocr/tesseract"><img src="https://img.shields.io/badge/OCR-Tesseract%20%C2%B7%20Claude%20Vision-5a9e6f.svg" alt="OCR: Tesseract · Claude Vision"></a>
+  <a href="#dependencies"><img src="https://img.shields.io/badge/Platform-macOS%20%C2%B7%20Linux-555.svg" alt="Platform: macOS · Linux"></a>
+</p>
 
 A skill for [Claude Code](https://claude.ai/claude-code) and [Claude Cowork](https://claude.ai) that renames scientific PDF files — journal articles, book chapters, preprints, and theses — into a clean, consistent schema:
 
