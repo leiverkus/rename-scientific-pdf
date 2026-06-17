@@ -1,5 +1,6 @@
 # rename-scientific-pdf
 
+[![CI](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml/badge.svg)](https://github.com/leiverkus/rename-scientific-pdf/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-d97757?logo=anthropic&logoColor=white)](https://claude.ai/claude-code)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
@@ -50,11 +51,31 @@ Copy `SKILL.md` and `scripts/process_pdf.py` into your Claude skills directory.
 ## Dependencies
 
 ```bash
-pip3 install pymupdf pdf2image pytesseract
-brew install tesseract   # macOS — only needed for Tesseract OCR
+pip3 install -r requirements.txt          # or: pip3 install pymupdf pdf2image pytesseract
+
+# System binaries — only needed for the Tesseract OCR path:
+brew install tesseract poppler            # macOS
+# sudo apt install tesseract-ocr poppler-utils   # Debian/Ubuntu
 ```
 
-`pymupdf` (fitz) handles text extraction. `pdf2image` + `pytesseract` + the `tesseract` binary are only needed if you pick Tesseract OCR at first run. Claude vision needs no additional setup.
+`pymupdf` (fitz) handles text extraction and is the only hard requirement. The Tesseract OCR path (for scanned / image-only PDFs) additionally needs `pdf2image` + `pytesseract` **and** two system binaries: `tesseract` and `poppler` (used by `pdf2image` to rasterize pages). Claude vision needs no additional setup.
+
+### Non-English OCR
+
+Tesseract defaults to English. For German, French, etc. install the language packs and set `TESSERACT_LANG`:
+
+```bash
+brew install tesseract-lang                # macOS — all language packs
+export TESSERACT_LANG="eng+deu+fra"
+```
+
+### CrossRef etiquette (optional)
+
+Set a contact email so CrossRef can reach you if your usage causes problems — it's [recommended etiquette](https://www.crossref.org/documentation/retrieve-metadata/rest-api/tips-for-using-the-crossref-rest-api/) and can yield more reliable service:
+
+```bash
+export CROSSREF_MAILTO="you@example.com"
+```
 
 ---
 

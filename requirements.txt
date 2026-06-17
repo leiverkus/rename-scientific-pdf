@@ -1,0 +1,8 @@
+# Core text extraction (always required)
+pymupdf>=1.23
+
+# Tesseract OCR path — only needed for scanned / image-only PDFs.
+# These also require system binaries: `poppler` (for pdf2image) and
+# `tesseract` (with the language packs you need). See README.
+pdf2image>=1.16
+pytesseract>=0.3.10

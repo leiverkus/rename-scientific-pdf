@@ -62,7 +62,7 @@ Returns `{text, first_page_text, doi, is_image_only, page_count}`.
 
 If `is_image_only: true` (fewer than ~100 chars of extractable text):
 
-- **Tesseract**: `python3 "<script>" ocr "<pdf_path>"` → returns `{text, first_page_text, doi}`
+- **Tesseract**: `python3 "<script>" ocr "<pdf_path>" [lang]` → returns `{text, first_page_text, doi}`. `lang` is optional (e.g. `eng+deu+fra`); it defaults to the `TESSERACT_LANG` env var, then `eng`. For non-English scans, pass the right language(s) — the corresponding Tesseract language packs must be installed.
 - **Claude vision**: Use the `Read` tool on the PDF file path to view the pages visually, then extract text, DOI, title, and authors yourself from what you see.
 
 #### 2c. Resolve metadata
@@ -144,13 +144,14 @@ Errors (0):
 
 Required Python packages (install once):
 ```bash
-pip3 install pymupdf pdf2image pytesseract
-brew install tesseract  # macOS, only needed for Tesseract OCR
+pip3 install -r requirements.txt   # pymupdf pdf2image pytesseract
+brew install tesseract poppler     # macOS — only needed for Tesseract OCR
+# sudo apt install tesseract-ocr poppler-utils   # Debian/Ubuntu
 ```
 
-`pymupdf` (fitz) handles text extraction. `pdf2image` + `pytesseract` + the `tesseract` binary are only needed if the user picks Tesseract OCR. Claude vision needs no additional setup.
+`pymupdf` (fitz) handles text extraction and is the only hard requirement. The Tesseract OCR path additionally needs `pdf2image` + `pytesseract` plus the `tesseract` and `poppler` system binaries (poppler is what `pdf2image` uses to rasterize pages). Claude vision needs no additional setup.
 
-CrossRef is queried without an API key — the script sends a polite `User-Agent` header as recommended by CrossRef's etiquette guidelines.
+CrossRef is queried without an API key — the script sends a polite `User-Agent` header. Set `CROSSREF_MAILTO=you@example.com` to include a contact address as recommended by CrossRef's etiquette guidelines. Non-English OCR: set `TESSERACT_LANG` (e.g. `eng+deu+fra`) or pass the language as the optional `ocr` argument.
 
 ---
 

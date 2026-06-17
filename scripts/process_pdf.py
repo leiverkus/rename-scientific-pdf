@@ -4,14 +4,19 @@ PDF metadata helper for scientific document renaming.
 
 Commands:
   extract <pdf_path>              Extract text, detect DOI, detect if image-only
-  ocr <pdf_path>                  OCR via tesseract, returns plain text + DOI
+  ocr <pdf_path> [lang]           OCR via tesseract, returns plain text + DOI
   crossref_doi <doi>              Look up metadata by DOI via CrossRef
   crossref_search <query>         Search CrossRef by title/author keywords
+  semantic_search <query>         Search Semantic Scholar (good for preprints)
   rename <pdf_path> <author> <title> <year>   Rename file in place
   list <folder_path>              List all PDF files in folder
   format <author> <title> <year>  Preview formatted filename without renaming
 
 All commands return JSON to stdout.
+
+Environment variables:
+  CROSSREF_MAILTO   Contact email sent in the CrossRef User-Agent (etiquette).
+  TESSERACT_LANG    Default OCR language(s), e.g. "eng+deu+fra" (default: eng).
 """
 
 import sys
@@ -22,6 +27,18 @@ import unicodedata
 import urllib.request
 import urllib.parse
 import urllib.error
+
+
+# ---------------------------------------------------------------------------
+# HTTP helpers
+# ---------------------------------------------------------------------------
+
+def user_agent():
+    """Build a polite User-Agent. Set CROSSREF_MAILTO to your contact email."""
+    mailto = os.environ.get("CROSSREF_MAILTO", "").strip()
+    if mailto:
+        return f"scientific-pdf-skill/1.0 (mailto:{mailto})"
+    return "scientific-pdf-skill/1.0"
 
 
 # ---------------------------------------------------------------------------
@@ -88,27 +105,34 @@ def find_doi(text):
 # OCR via Tesseract
 # ---------------------------------------------------------------------------
 
-def ocr_tesseract(pdf_path):
-    """OCR a PDF using Tesseract. Returns {text, first_page_text, doi}."""
+def ocr_tesseract(pdf_path, lang=None):
+    """OCR a PDF using Tesseract. Returns {text, first_page_text, doi}.
+
+    lang controls the Tesseract language(s), e.g. "eng+deu+fra". Falls back to
+    the TESSERACT_LANG env var, then "eng". Extra languages need their data
+    packs installed (e.g. `brew install tesseract-lang`).
+    """
     try:
         from pdf2image import convert_from_path
         import pytesseract
     except ImportError:
         return {"error": "pdf2image or pytesseract not installed. Run: pip3 install pdf2image pytesseract"}
 
+    lang = lang or os.environ.get("TESSERACT_LANG", "eng")
+
     try:
         pages = convert_from_path(pdf_path, first_page=1, last_page=3, dpi=200)
     except Exception as e:
-        return {"error": f"Could not convert PDF to images: {e}"}
+        return {"error": f"Could not convert PDF to images (is poppler installed?): {e}"}
 
     full_text = ""
     first_page_text = ""
 
     for i, page in enumerate(pages):
         try:
-            page_text = pytesseract.image_to_string(page, lang="eng")
+            page_text = pytesseract.image_to_string(page, lang=lang)
         except Exception as e:
-            return {"error": f"Tesseract OCR failed on page {i+1}: {e}"}
+            return {"error": f"Tesseract OCR failed on page {i+1} (lang={lang}): {e}"}
         if i == 0:
             first_page_text = page_text
         full_text += page_text
@@ -121,6 +145,7 @@ def ocr_tesseract(pdf_path):
         "doi": doi,
         "is_image_only": True,
         "ocr_method": "tesseract",
+        "lang": lang,
     }
 
 
@@ -134,10 +159,7 @@ def crossref_doi(doi):
     url = f"https://api.crossref.org/works/{encoded}"
 
     try:
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": "scientific-pdf-skill/1.0 (mailto:user@example.com)"},
-        )
+        req = urllib.request.Request(url, headers={"User-Agent": user_agent()})
         with urllib.request.urlopen(req, timeout=10) as response:
             data = json.loads(response.read())
     except urllib.error.HTTPError as e:
@@ -161,10 +183,7 @@ def crossref_search(query):
     url = f"https://api.crossref.org/works?{params}"
 
     try:
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": "scientific-pdf-skill/1.0 (mailto:user@example.com)"},
-        )
+        req = urllib.request.Request(url, headers={"User-Agent": user_agent()})
         with urllib.request.urlopen(req, timeout=10) as response:
             data = json.loads(response.read())
     except Exception as e:
@@ -188,10 +207,7 @@ def semantic_search(query):
     url = f"https://api.semanticscholar.org/graph/v1/paper/search?{params}"
 
     try:
-        req = urllib.request.Request(
-            url,
-            headers={"User-Agent": "scientific-pdf-skill/1.0"},
-        )
+        req = urllib.request.Request(url, headers={"User-Agent": user_agent()})
         with urllib.request.urlopen(req, timeout=10) as response:
             data = json.loads(response.read())
     except Exception as e:
@@ -358,7 +374,8 @@ if __name__ == "__main__":
         print(json.dumps(extract_text(sys.argv[2])))
 
     elif cmd == "ocr" and len(sys.argv) >= 3:
-        print(json.dumps(ocr_tesseract(sys.argv[2])))
+        lang = sys.argv[3] if len(sys.argv) >= 4 else None
+        print(json.dumps(ocr_tesseract(sys.argv[2], lang)))
 
     elif cmd == "crossref_doi" and len(sys.argv) >= 3:
         print(json.dumps(crossref_doi(sys.argv[2])))
