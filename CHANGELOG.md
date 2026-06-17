@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- The `.skill` bundle is now a build artifact produced by
+  `scripts/build_skill.sh` and attached to releases automatically by CI on any
+  `v*` tag — it is no longer committed to the repository.
+
 ## [1.0.0] - 2026-06-18
 
 First tagged release. The skill renames scientific PDFs to a clean

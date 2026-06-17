@@ -4,3 +4,6 @@ __pycache__/
 test/
 evals/
 *.log
+
+# Built distributable bundle — produced by scripts/build_skill.sh, attached to releases
+rename-scientific-pdf.skill
