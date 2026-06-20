@@ -137,4 +137,8 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
-MIT
+This project's own code is licensed under the [MIT License](LICENSE).
+
+It depends on **[PyMuPDF](https://github.com/pymupdf/PyMuPDF), which is licensed under AGPL-3.0** (or a commercial license from Artifex). PyMuPDF is **not** bundled with this project — it is installed separately by the user via `requirements.txt`. If you redistribute this tool together with PyMuPDF, or run it as a network service, you must comply with the AGPL-3.0 terms (including its network/source-disclosure clause).
+
+The remaining dependencies are permissively licensed: `pdf2image` (MIT) and `pytesseract` (Apache-2.0).
